@@ -24,6 +24,21 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/",
+        has: [
+          {
+            type: "host",
+            value: "dub-git-caching-headers-elegance.vercel.app",
+          },
+        ],
+        headers: [
+          {
+            key: "cdn-cache-control",
+            value: "max-age=300",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           {
