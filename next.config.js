@@ -1,5 +1,19 @@
 const { withContentlayer } = require("next-contentlayer");
 
+const cachedPaths = [
+  "/",
+  "/pricing",
+  "/metatags",
+  "/blog",
+  "/blog/:path*",
+  "/help",
+  "/help/:path*",
+  "/changelog",
+  "/changelog/:path*",
+  "/privacy",
+  "/terms",
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -23,8 +37,8 @@ const nextConfig = {
   },
   async headers() {
     return [
-      {
-        source: "/",
+      ...cachedPaths.map((path) => ({
+        source: path,
         has: [
           {
             type: "host",
@@ -37,7 +51,7 @@ const nextConfig = {
             value: "max-age=300",
           },
         ],
-      },
+      })),
       {
         source: "/:path*",
         headers: [
