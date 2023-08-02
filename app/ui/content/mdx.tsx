@@ -1,20 +1,19 @@
-"use client";
-
 import Link from "next/link";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import GithubRepo, { GithubRepoProps } from "@/components/shared/github-repo";
-import BlurImage from "#/ui/blur-image";
 import MDXTweet from "#/ui/tweet";
 import { Tweet as TweetProps } from "react-tweet/api";
-import useMediaQuery from "#/lib/hooks/use-media-query";
 import { cn } from "#/lib/utils";
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { HELP_CATEGORIES, getPopularArticles } from "#/lib/constants/content";
 import ArticleLink from "./article-link";
 import CategoryCard from "./category-card";
 import { ListChecks } from "lucide-react";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const ZoomImage = dynamic(() => import("./zoom-image"), {
+  ssr: false,
+});
 
 const CustomLink = (props: any) => {
   const href = props.href;
@@ -110,7 +109,6 @@ interface MDXProps {
 
 export function MDX({ code, images, tweets, repos, className }: MDXProps) {
   const Component = useMDXComponent(code);
-  const { isDesktop } = useMediaQuery();
 
   const MDXImage = (props: any) => {
     if (!images) return null;
@@ -118,26 +116,7 @@ export function MDX({ code, images, tweets, repos, className }: MDXProps) {
       (image) => image.src === props.src,
     )?.blurDataURL;
 
-    return (
-      <Suspense>
-        <figure className="not-prose flex flex-col items-center justify-center space-y-3">
-          <Zoom zoomMargin={isDesktop ? 45 : undefined}>
-            <BlurImage
-              {...props}
-              className="rounded-lg border border-gray-200"
-              placeholder="blur"
-              blurDataURL={
-                blurDataURL ||
-                "data:image/webp;base64,AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-              }
-            />
-          </Zoom>
-          <figcaption className="text-center text-sm italic text-gray-500">
-            {props.alt}
-          </figcaption>
-        </figure>
-      </Suspense>
-    );
+    return <ZoomImage {...props} blurDataURL={blurDataURL} />;
   };
 
   const Tweet = ({ id }: { id: string }) => {
