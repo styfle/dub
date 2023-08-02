@@ -9,11 +9,7 @@ import { HELP_CATEGORIES, getPopularArticles } from "#/lib/constants/content";
 import ArticleLink from "./article-link";
 import CategoryCard from "./category-card";
 import { ListChecks } from "lucide-react";
-import dynamic from "next/dynamic";
-
-const ZoomImage = dynamic(() => import("./zoom-image"), {
-  loading: () => <div className="h-64 rounded-lg bg-gray-200" />,
-});
+import ZoomImage from "./zoom-image";
 
 const CustomLink = (props: any) => {
   const href = props.href;
