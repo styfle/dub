@@ -14,6 +14,7 @@ import { HELP_CATEGORIES, getPopularArticles } from "#/lib/constants/content";
 import ArticleLink from "./article-link";
 import CategoryCard from "./category-card";
 import { ListChecks } from "lucide-react";
+import { Suspense } from "react";
 
 const CustomLink = (props: any) => {
   const href = props.href;
@@ -118,22 +119,24 @@ export function MDX({ code, images, tweets, repos, className }: MDXProps) {
     )?.blurDataURL;
 
     return (
-      <figure className="not-prose flex flex-col items-center justify-center space-y-3">
-        <Zoom zoomMargin={isDesktop ? 45 : undefined}>
-          <BlurImage
-            {...props}
-            className="rounded-lg border border-gray-200"
-            placeholder="blur"
-            blurDataURL={
-              blurDataURL ||
-              "data:image/webp;base64,AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-            }
-          />
-        </Zoom>
-        <figcaption className="text-center text-sm italic text-gray-500">
-          {props.alt}
-        </figcaption>
-      </figure>
+      <Suspense>
+        <figure className="not-prose flex flex-col items-center justify-center space-y-3">
+          <Zoom zoomMargin={isDesktop ? 45 : undefined}>
+            <BlurImage
+              {...props}
+              className="rounded-lg border border-gray-200"
+              placeholder="blur"
+              blurDataURL={
+                blurDataURL ||
+                "data:image/webp;base64,AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+              }
+            />
+          </Zoom>
+          <figcaption className="text-center text-sm italic text-gray-500">
+            {props.alt}
+          </figcaption>
+        </figure>
+      </Suspense>
     );
   };
 
