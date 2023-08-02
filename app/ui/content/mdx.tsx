@@ -12,7 +12,7 @@ import { ListChecks } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const ZoomImage = dynamic(() => import("./zoom-image"), {
-  ssr: false,
+  loading: () => <div className="h-64 rounded-lg bg-gray-200" />,
 });
 
 const CustomLink = (props: any) => {
